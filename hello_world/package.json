@@ -1,0 +1,24 @@
+{
+  "name": "hello_world",
+  "version": "1.0.0",
+  "description": "\"MS101JS Week 1 example\"",
+  "main": "app.js",
+  "dependencies": {
+    "consolidate": "^0.14.1",
+    "express": "^4.14.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "\"Bill Moore\"",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/nzmoore/M101JS.git"
+  },
+  "bugs": {
+    "url": "https://github.com/nzmoore/M101JS/issues"
+  },
+  "homepage": "https://github.com/nzmoore/M101JS#readme"
+}
