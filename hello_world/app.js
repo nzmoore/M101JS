@@ -24,6 +24,17 @@ var express = require('express'),
        
        });
        
+       app.get("/:showvars", function(req, res) {
+         var showvars = req.params.showvars;
+         var reqVar = req.query;
+         
+         for (var prop in reqVar) {
+            console.log("reqVar." + prop + " = " + reqVar[prop]);
+         }
+         res.render('showvars', {'name': showvars,'params': reqVar});
+          
+       });
+       
        app.use(function(req,res) {
        res.sendStatus(404);
        });

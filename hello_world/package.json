@@ -1,22 +1,24 @@
 {
   "name": "hello_world",
   "version": "1.0.0",
-  "description": "\"MS101JS Week 1 example\"",
+  "description": "MS101JS Week 1 example",
   "main": "app.js",
   "dependencies": {
     "consolidate": "^0.14.1",
-    "express": "^4.14.0"
+    "express": "^4.14.0",
+    "mongodb": "^2.2.10",
+    "nunjucks": "^2.5.2"
   },
   "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "\"Bill Moore\"",
-  "license": "ISC",
   "repository": {
     "type": "git",
-    "url": "https://github.com/nzmoore/M101JS.git"
+    "url": "git+https://github.com/nzmoore/M101JS.git"
   },
+  "author": "Bill Moore",
+  "license": "ISC",
   "bugs": {
     "url": "https://github.com/nzmoore/M101JS/issues"
   },
