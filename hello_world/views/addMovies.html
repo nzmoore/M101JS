@@ -1,0 +1,21 @@
+<html>
+<head>
+  <style>
+     body {font-family: 'Helvetica', 'Arial', sans-serif; }
+  </style>
+  <title> Enter Movies </title>
+</head>
+
+<body>
+<h1> Enter movies to insert </h1>
+<form action="/addMovie" method="POST" >
+Title: <Input type="Text" name="title" placeholder="Enter title" /> <br>
+Year: <Input type="Text" name="year" placeholder="Enter year released" /> <br>
+IMDB Movie ID: <Input type="Text" name="imdb" placeholder="Enter IMDB movie ID" /> <br>
+<p></p>
+<Input type="Submit" value="Add"/>
+<p> {{ message }} </p>
+
+</form>
+</body>
+</html>
