@@ -17,6 +17,7 @@ var express = require('express'),
     res.status(500).render('error-template', { error: err });
     }
     
+   
     
     MongoClient.connect('mongodb://localhost:27017/video', function(err, db) {
     
@@ -51,7 +52,17 @@ var express = require('express'),
               var title = req.body.title; 
               var year = req.body.year;
               var id = req.body.imdb;
-              var addData = true
+              var addData = true;
+              var result;
+              
+            var addCallback = function addMovieCallback(err, result) {
+                  assert.equal(null, err);
+                  messageText = "Movie added " + title + " " + year + " " + id ; 
+                  console.log("add callback");
+                  console.log(result);
+                  res.render('addMovies', { "message": messageText } );
+              };
+            
               
               if (!title) {
      			   messageText = "Enter a title! ";
@@ -69,11 +80,18 @@ var express = require('express'),
    			  };
                
               if (addData) {
-                messageText = "Movie added " + title + " " + year + " " + id ;   
-                db.collection('movies').insertOne({"title": title, "year": year, "imdb": id});
+                  
+                db.collection('movies').insertOne(
+                {"title": title, "year": year, "imdb": id},
+                addCallback(err, result)
+                );
+              }
+              else {
+                res.render('addMovies', { "message": messageText } ); 
               };    
               
-              res.render('addMovies', { "message": messageText } );
+               
+              
        });
        
        app.get("/showvars", function(req, res, next) {
