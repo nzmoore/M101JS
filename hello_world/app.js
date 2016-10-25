@@ -83,7 +83,13 @@ var express = require('express'),
                   
                 db.collection('movies').insertOne(
                 {"title": title, "year": year, "imdb": id},
-                addCallback(err, result)
+                function(err, result) {
+                    assert.equal(null, err);
+                    messageText = "Movie added " + title + " " + year + " " + id ; 
+                    console.log("add callback");
+                    console.log(result);
+                    res.render('addMovies', { "message": messageText } );
+                }
                 );
               }
               else {
