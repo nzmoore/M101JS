@@ -52,20 +52,31 @@ function ItemDAO(database) {
         *
         */
 
-        var categories = [];
-        var category = {
+        
+        
+        var aggregatePipeline = [];
+        aggregatePipeline.push({ $group: { _id: "$category", num: { $sum: 1 } } });
+        aggregatePipeline.push({ $sort: { _id: 1 } });
+
+        
+        this.db.collection('item').aggregate(aggregatePipeline).toArray( function(err, docs) {
+           assert.equal(err, null);
+                     
+           var categories = docs;
+ 
+           var sum = categories.reduce(function(accumulator, category) {
+           return category.num + accumulator;
+           }, 0);
+           
+           var categoryAll = {
             _id: "All",
-            num: 9999
-        };
+            num: sum
+            };
 
-        categories.push(category)
-
-        // TODO-lab1A Replace all code above (in this method).
-
-        // TODO Include the following line in the appropriate
-        // place within your code to pass the categories array to the
-        // callback.
-        callback(categories);
+           categories.unshift(categoryAll);          
+           callback(categories);
+        });
+        
     }
 
 
@@ -93,19 +104,39 @@ function ItemDAO(database) {
          * than you do for other categories.
          *
          */
-
-        var pageItem = this.createDummyItem();
+         
+        if ( category === 'All' ) {
+           var query = {};
+        } else {
+           var query = { "category": { $eq: category} } ;
+        };
+             
+        var numMatches = 0;
+        var cursor = this.db.collection('item').find(query);
+        cursor.limit(itemsPerPage);
+        cursor.skip(page * itemsPerPage);
+        cursor.sort([[ '_id', 1]]);
         var pageItems = [];
-        for (var i=0; i<5; i++) {
-            pageItems.push(pageItem);
-        }
+        
+        cursor.forEach(
+          function(doc) {
+              numMatches = numMatches + 1;
+              pageItems.push(doc); 
+          },
+          function(err) {
+              assert.equal(err, null);
+              callback(pageItems);
+          }
+        );
+        
+       
 
         // TODO-lab1B Replace all code above (in this method).
 
         // TODO Include the following line in the appropriate
         // place within your code to pass the items for the selected page
         // to the callback.
-        callback(pageItems);
+        
     }
 
 
@@ -113,7 +144,18 @@ function ItemDAO(database) {
         "use strict";
 
         var numItems = 0;
-
+        if ( category === 'All' ) {
+           var query = {};
+        } else {
+           var query = { "category": { $eq: category} } ;
+        };
+        
+        this.db.collection('item').find(query).count( function(err, count) {
+           assert.equal(err, null);
+                     
+           numItems = count;
+           callback(numItems);      
+        });
         /*
          * TODO-lab1C:
          *
@@ -131,7 +173,7 @@ function ItemDAO(database) {
 
          // TODO Include the following line in the appropriate
          // place within your code to pass the count to the callback.
-        callback(numItems);
+        
     }
 
 
@@ -162,18 +204,37 @@ function ItemDAO(database) {
          *
          */
 
-        var item = this.createDummyItem();
+        var numMatches = 0;
+        var query =  { $text:  { $search: query} } ;
+        console.log.query();
+        
+        var cursor = this.db.collection('item').find(query);
+        cursor.limit(itemsPerPage);
+        cursor.skip(page * itemsPerPage);
+        cursor.sort([[ '_id', 1]]);
         var items = [];
-        for (var i=0; i<5; i++) {
-            items.push(item);
-        }
+        cursor.forEach(
+          function(doc) {
+              numMatches = numMatches + 1;
+              items.push(doc); 
+              console.log(doc);
+          },
+          function(err) {
+              assert.equal(err, null);
+              console.log(numMatches);
+              callback(items);
+          }
+        );        
+        
+       
+       
 
         // TODO-lab2A Replace all code above (in this method).
 
         // TODO Include the following line in the appropriate
         // place within your code to pass the items for the selected page
         // of search results to the callback.
-        callback(items);
+       
     }
 
 
