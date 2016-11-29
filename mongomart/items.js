@@ -206,7 +206,7 @@ function ItemDAO(database) {
 
         var numMatches = 0;
         var query =  { $text:  { $search: query} } ;
-        console.log.query();
+        
         
         var cursor = this.db.collection('item').find(query);
         cursor.limit(itemsPerPage);
@@ -217,11 +217,9 @@ function ItemDAO(database) {
           function(doc) {
               numMatches = numMatches + 1;
               items.push(doc); 
-              console.log(doc);
           },
           function(err) {
               assert.equal(err, null);
-              console.log(numMatches);
               callback(items);
           }
         );        
@@ -241,7 +239,15 @@ function ItemDAO(database) {
     this.getNumSearchItems = function(query, callback) {
         "use strict";
 
+
         var numItems = 0;
+        var query =  { $text:  { $search: query} } ;
+        
+        this.db.collection('item').find(query).count( function(err, count) {
+           assert.equal(err, null);          
+           numItems = count;
+           callback(numItems);      
+        });
 
         /*
         * TODO-lab2B
@@ -256,7 +262,7 @@ function ItemDAO(database) {
         * simply do this in the mongo shell.
         */
 
-        callback(numItems);
+       
     }
 
 
