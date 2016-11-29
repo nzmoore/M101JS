@@ -330,14 +330,14 @@ function ItemDAO(database) {
             date: Date.now()
         };
         var updateReview = { $push: { reviews:  reviewDoc } };
-        console.log(query);
-        console.log(reviewDoc);
-        console.log(updateReview);
         
-        this.db.collection("item").update(query, updateReview, function(err, result) {
+        
+        this.db.collection("item").findAndModify(query, [[ '_id', 1]], updateReview, { new:true }, function(err, result) {
            assert.equal(null, err);
-           console.log(result);
-           callback(reviewDoc);
+           console.log('Added review successfully now');
+           var newDoc = result.value;
+           console.log('the new doc is' + JSON.stringify(newDoc) );
+           callback(newDoc);
         });
 
         // TODO replace the following two lines with your code that will
